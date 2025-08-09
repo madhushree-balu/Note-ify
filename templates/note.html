@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ note[2] }} - Note-ify</title>
+</head>
+<body>
+    
+    <div>
+
+        <div class="title_holder">
+            <input type="text" id="note_title" value="{{ note[2] }}" maxlength="200" required>
+        </div>
+        <div class="desc">
+            <p>Created on: {{ note[4] }}</p>
+            <p>Last modified: {{ note[5] }}</p>
+            <p>Starred: {{ 'Yes' if note[6] else 'No' }}</p>
+            <div class="save">Save</div>
+        </div>
+
+        <div class="content_holder">
+            <textarea id="note_content" rows="10" required>{{ note[3] }}</textarea>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+// send a request to "/save" to save the note
+
+document.querySelector(".save").addEventListener("click", async function(e){
+    let note_title = document.querySelector("#note_title").value;
+    let note_content = document.querySelector("#note_content").value;
+    let note_id = window.location.pathname.split("/")[2];
+    let response = await fetch("/api/save/"+note_id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "title": note_title,
+            "content": note_content
+        })
+    });
+    let data = await response.json();
+    console.log(data);
+    if (data.success) {
+        alert("Note saved successfully!");
+    } else {
+        alert("Error saving note!");
+    }
+})
+
+</script>
+</html>

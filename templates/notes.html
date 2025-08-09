@@ -1,2 +1,21 @@
-{{ notes }}
-<a href="/new">New Note</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note-ify | Home</title>
+</head>
+<body>
+    
+    <div>
+        <h1>Notes</h1>
+        <ul>
+            {% for note in notes %} 
+                <li class="note {{ 'starred' if note[6] else '' }}"><a href="/note/{{ note[0] }}">Note: {{ note[2] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="/new">New Note</a>
+</body>
+</html>

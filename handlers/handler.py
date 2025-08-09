@@ -5,7 +5,7 @@ query_user_table = """
 create table if not exists user (
     username char(200) primary key,
     emailid varchar(100) unique,
-    password varchar(256)
+    password varchar(256) not null
 )
 """
 
@@ -37,7 +37,7 @@ def get_userby_username (username):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
     res=cur.execute("""
-    select (username,emailid,password) from user where username=?
+    select username,emailid,password from user where username=?
     """,(username,))
     return res.fetchone()
 
@@ -48,12 +48,14 @@ def get_userby_email(email):
     select username,emailid,password from user where emailid=?
     """,(email,))
     return res.fetchone()
-def match_passsword(email,password):
+def match_passsword(username,password):
     
-    data=get_userby_email(email)
+    data=get_userby_username(username)
     if not data:
         return False
-    hashed_password=hashlib.sha256(password).hexdigest()
+    hashed_password=hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+    print(data)
     return hashed_password==data[2]
 
 def create_user(username, email, password) -> bool:
@@ -66,7 +68,7 @@ def create_user(username, email, password) -> bool:
         return False
 
     # hash the password
-    hashed_password=hashlib.sha256(password).hexdigest()
+    hashed_password=hashlib.sha256(password.encode('utf-8')).hexdigest()
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
     cur.execute("""
@@ -84,6 +86,7 @@ def get_all_notes(username):
     """,(username,))
     result=res.fetchall()
     conn.close()
+    print(result)
     return result
 
 def get_latest_created_notes(username):
@@ -94,7 +97,7 @@ def get_latest_created_notes(username):
     """,(username,))
     result=res.fetchone()
     conn.close()
-    return result
+    return result[0] if result else None
 
 def create_note(username,title='',content=''):
     conn=sqlite3.connect('noteify.db')
@@ -113,20 +116,20 @@ def modify_note(noteid, username, title, content):
     cur=conn.cursor()
     cur.execute("""
     update notes set title=?,content=? where noteid=? and username=?
-    """,(title,content,noteid))
+    """,(title,content,noteid,username))
     conn.commit()
     conn.close()
     return True
 
 def get_note(noteid, username):
-
-    conn=sqlite3.connect('note-ify.db')
+    conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
     res=cur.execute("""
     select * from notes where username=? and noteid=?
     """,(username,noteid,))
-    return res.fetchone()
-
+    arr = res.fetchone()
+    conn.close()
+    return arr
     
 
 
