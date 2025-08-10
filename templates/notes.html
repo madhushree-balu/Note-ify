@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note-ify | Home</title>
+    <link rel="stylesheet" href=" {{ url_for( 'static', filename='notes.css' ) }} ">
 </head>
 <body>
+    
+    <div class="top_bar">
+        <div class="top_container">
+            <div class="left_icon">
+                <a href="/">🏠</a>
+            </div>
+            <div class="text">
+                <p>Note-ify</p>
+            </div>
+            {% if not session.get('username') %}
+                <div class="right_icons">
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a>
+                </div>
+            {% else %}
+                <div class="right_icons">
+                    <a href="/profile">{{ session.get('username') }}</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+ 
     
     <div>
         <h1>Notes</h1>
@@ -16,6 +40,9 @@
         </ul>
     </div>
 
-    <a href="/new">New Note</a>
+    <a href="/new" class="new">
+        <div class="new-icon">+</div>
+        <div class="new-text">New Note</div>
+    </a>
 </body>
 </html>

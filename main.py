@@ -94,19 +94,19 @@ def save(note_id):
     }
 
 
-@app.get("/api/fav/<int:note_id>")
-def fav(note_id):
-    # the code to toggle the star and return the bool val
-    # also implement it in the handler file.
-    # return { success: ?, star: ? }
-    ...
+# @app.get("/api/fav/<int:note_id>")
+# def fav(note_id):
+#     # the code to toggle the star and return the bool val
+#     # also implement it in the handler file.
+#     # return { success: ?, star: ? }
+#     ...
 
-@app.delete("/api/delete/<int:note_id>")
-def delete(note_id):
-    # implement the code here to delete the note.
-    # return redirect to login
-    # also implement the required function in the handler file
-    ...
+# @app.delete("/api/delete/<int:note_id>")
+# def delete(note_id):
+#     # implement the code here to delete the note.
+#     # return redirect to login
+#     # also implement the required function in the handler file
+#     ...
 
 
 if __name__=="__main__":
