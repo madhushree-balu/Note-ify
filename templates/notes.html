@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note-ify | Home</title>
+    <link rel="stylesheet" href=" {{ url_for( 'static', filename='main.css' ) }} ">
     <link rel="stylesheet" href=" {{ url_for( 'static', filename='notes.css' ) }} ">
 </head>
+
 <body>
-    
+
     <div class="top_bar">
         <div class="top_container">
             <div class="left_icon">
@@ -17,32 +20,48 @@
                 <p>Note-ify</p>
             </div>
             {% if not session.get('username') %}
-                <div class="right_icons">
-                    <a href="/login">Login</a>
-                    <a href="/signup">Signup</a>
-                </div>
+            <div class="right_icons">
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+            </div>
             {% else %}
-                <div class="right_icons">
-                    <a href="/profile">{{ session.get('username') }}</a>
-                    <a href="/logout">Logout</a>
-                </div>
+            <div class="right_icons">
+                <a href="/profile">{{ session.get('username') }}</a>
+                <a href="/logout">Logout</a>
+            </div>
             {% endif %}
         </div>
     </div>
- 
-    
-    <div>
-        <h1>Notes</h1>
+
+
+    <div class="notes">
+        <a href="/new" class="new" onclick="fadeScreen()">
+            <div class="new-icon">+</div>
+            <div class="new-text">New Note</div>
+        </a>
         <ul>
-            {% for note in notes %} 
-                <li class="note {{ 'starred' if note[6] else '' }}"><a href="/note/{{ note[0] }}">Note: {{ note[2] }}</a></li>
+            {% for note in notes %}
+            <a href="/note/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
+                <div class="preview">
+                    <p>
+                        {{ note[3] }}
+                    </p>
+                </div>
+                <div class="down">
+                    <h5>Note: {{ note[2] }}</h5>
+                </div>
+
+            </a>
             {% endfor %}
         </ul>
     </div>
-
-    <a href="/new" class="new">
-        <div class="new-icon">+</div>
-        <div class="new-text">New Note</div>
-    </a>
 </body>
+<script>
+
+function fadeScreen() {
+    alert("Not implemented")
+}
+
+</script>
+
 </html>
