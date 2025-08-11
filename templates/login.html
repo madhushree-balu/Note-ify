@@ -9,7 +9,30 @@
 </head>
 <body>
     
-    <div>
+        <div class="top_bar">
+        <div class="top_container">
+            <div class="left_icon">
+                <a href="/">🏠</a>
+            </div>
+            <div class="text">
+                <p>Note-ify</p>
+            </div>
+            {% if not session.get('username') %}
+                <div class="right_icons">
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a>
+                </div>
+            {% else %}
+                <div class="right_icons">
+                    <a href="/profile">{{ session.get('username') }}</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="form-container">
 
         <h1>Login to Note-ify</h1>
         <form action="" method="post">
