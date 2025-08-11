@@ -83,6 +83,7 @@ a.new {
     height: 50px;
     justify-items: flex-start;
     overflow: hidden;
+    text-align: center;
 }
 
 a.note:hover {
@@ -111,11 +112,11 @@ a.new:hover {background-position: 0px 0px;color: #fff;box-shadow: 0 0 30px #e6cd
     align-items: center;
     justify-content: center;
     transition: .3s;
-    min-width: 80px;
+    min-width: 90px;
 }
 
 .new:hover {
-    width: 150px;
+    width: 180px;
 }
 
 a.new:hover .new-icon {
