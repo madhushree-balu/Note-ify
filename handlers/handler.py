@@ -24,23 +24,36 @@ create table if not exists notes(
 """
 
 
-def create_tables():
+def execute( query: str, params = () ):
     conn = sqlite3.connect('noteify.db')
-    cursor = conn.cursor()
-    cursor.execute(query_user_table)
-    cursor.execute(notes_table)    
+    conn.execute(query, params)
     conn.commit()
     conn.close()
+    return True
+
+def select( query: str, params = (), one = False ):
+    conn = sqlite3.connect('noteify.db')
+    res = conn.execute(query, params)
+    if one:
+        result = res.fetchone()
+    else:
+        result = res.fetchall()
+    conn.close()
+    return result
 
 
+def create_tables():
+    execute(query_user_table)
+    execute(notes_table)
+    return True
 
-def get_userby_username (username):
-    conn=sqlite3.connect('noteify.db')
-    cur=conn.cursor()
-    res=cur.execute("""
-    select username,emailid,password from user where username=?
-    """,(username,))
-    return res.fetchone()
+
+def get_userby_username(username):
+    quer = "select username,emailid,password from user where username=?"
+    param = (username,)
+    res = select(quer, param, one = True)
+    return res
+
 
 def get_userby_email(email):
     conn=sqlite3.connect('noteify.db')
@@ -49,15 +62,15 @@ def get_userby_email(email):
     select username,emailid,password from user where emailid=?
     """,(email,))
     return res.fetchone()
+
+
 def match_passsword(username,password):
-    
     data=get_userby_username(username)
     if not data:
         return False
     hashed_password=hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-    print(data)
     return hashed_password==data[2]
+
 
 def create_user(username, email, password) -> bool:
     # check if the username already exists here
@@ -87,32 +100,33 @@ def get_all_notes(username):
     """,(username,))
     result=res.fetchall()
     conn.close()
-    print(result)
     return result
 
-def get_latest_created_notes(username):
+
+def get_max_note_id(username):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
     res=cur.execute("""
     select max(noteid) from notes where username=?
     """,(username,))
-    result=res.fetchone()
+    result=res.fetchone()[0]    
     conn.close()
-    return result[0] if result else None
+    return result if result else 0
+
 
 def create_note(username,title='',content=''):
-    conn=sqlite3.connect('noteify.db')
-    cur=conn.cursor()
-    noteid=count_username(username)+1
+    conn = sqlite3.connect('noteify.db')
+    cur = conn.cursor()
+    noteid = get_max_note_id(username) + 1
     cur.execute("""
     insert into notes(noteid, username, title, content ) values(?,?,?,?)
-    """,(noteid ,username,title,content,))
+    """, (noteid, username, title, content,))
     conn.commit()
     conn.close()
     return noteid
 
     
-def modify_note(noteid, username, title, content):
+def modify_note(noteid, username, title, content, fav, public):
     if not get_note(noteid, username):
         return False
     conn=sqlite3.connect('noteify.db')
@@ -124,6 +138,7 @@ def modify_note(noteid, username, title, content):
     conn.close()
     return True
 
+
 def get_note(noteid, username):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
@@ -133,6 +148,7 @@ def get_note(noteid, username):
     arr = res.fetchone()
     conn.close()
     return arr
+    
     
 def delete_note(noteid, username):
     if not get_note(noteid, username):
@@ -146,17 +162,6 @@ def delete_note(noteid, username):
     conn.close()
     return True
 
-def count_username(username):
-    conn=sqlite3.connect('noteify.db')
-    cur=conn.cursor()
-    res=cur.execute("""
-    select count(*) from notes where username=?
-    """,(username,))
-    result=res.fetchone()[0]    
-    conn.close()
-    return result
 
-
-    
-
-
+# A function to toggle fav
+# A function to check if a note is public

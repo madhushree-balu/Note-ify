@@ -8,24 +8,6 @@
     <link rel="stylesheet" href=" {{ url_for( 'static', filename='note.css' ) }} ">
     <link rel="stylesheet" href="https://esm.sh/prosemirror-view/style/prosemirror.css">
     <style>
-        body {
-            margin: 0;
-            background-color: #2e3440;
-            /* Nord dark background */
-            color: #d8dee9;
-            font-family: sans-serif;
-        }
-
-        #editor {
-            border: 1px solid #4c566a;
-            padding: 10px;
-            min-height: 200px;
-            max-width: 700px;
-            margin: 20px auto;
-            background-color: #3b4252;
-            border-radius: 6px;
-        }
-
         /* ProseMirror fix */
         .ProseMirror {
             white-space: pre-wrap;
@@ -33,11 +15,11 @@
             color: #eceff4;
         }
     </style>
-    
+
 </head>
 
 <body>
-        <div class="top_bar">
+    <div class="top_bar">
         <div class="top_container">
             <div class="left_icon">
                 <a href="/">🏠</a>
@@ -58,7 +40,7 @@
             {% endif %}
         </div>
     </div>
-    <div>
+    <div class="page">
         <div class="title_holder">
             <input type="text" id="note_title" value="{{ note[2] }}" maxlength="200" required>
         </div>

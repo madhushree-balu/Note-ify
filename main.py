@@ -87,8 +87,9 @@ def save(note_id):
     
     title = data.get('title')
     content = data.get('content')
-    
-    handler.modify_note(note_id,username,title,content)
+
+    # fix this
+    # handler.modify_note(note_id,username,title,content)
     return {
         "success":True
     }

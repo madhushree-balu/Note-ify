@@ -1,0 +1,72 @@
+.page {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input#note_title {
+    font-size: 32px;
+    color: #fff;
+    background: none;
+    outline: none;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #fff0;
+    transition: .2s ease-out;
+}
+
+.title_holder {
+    width: 100%;
+}
+
+input#note_title:hover {
+    border: 1px solid #fff3;
+}
+
+input#note_title:focus {
+    border: 1px solid #fff3;
+}
+
+.desc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+
+.content_holder {
+    min-height: 1em;
+    min-width: 80%;
+    border: 1px solid #474747;
+    margin-top: 20px;
+    font-size: 20px;
+    line-height: normal;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: .2s ease-out;
+}
+
+[role="textbox"] > * {
+    border-bottom: 1px solid #ffffff09;
+}
+[role="textbox"] > *:last-child {
+    border-bottom: 1px solid #ffffff00;
+}
+
+:focus-visible {
+    outline: none;
+}
+
+.content_holder:has(:focus-within) {
+    border: 1px solid #fff;
+}
+li, ol {
+    margin-left: 1em;
+}
