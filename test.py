@@ -21,3 +21,28 @@ res=cur.execute("""
 select * from student
 """)
 print(res.fetchall())
+
+def count_username(username):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""
+    select count(*) from notes where username=?
+    """,(username,))        
+    return res.fetchone()[0]  
+    conn.close()
+count_username('Madhushree')
+
+
+
+def create_note(username,title='',content=''):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""
+    insert into notes(noteid, username, title, content ) values(?,?,?,?)
+    """,(count_username(username)+1,username,title,content,))
+    conn.commit()
+    print(res.fetchall())
+    conn.close()
+    
+create_note('Madhushree','title','content') 
+

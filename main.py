@@ -93,7 +93,6 @@ def save(note_id):
         "success":True
     }
 
-
 # @app.get("/api/fav/<int:note_id>")
 # def fav(note_id):
 #     # the code to toggle the star and return the bool val
@@ -107,7 +106,6 @@ def save(note_id):
 #     # return redirect to login
 #     # also implement the required function in the handler file
 #     ...
-
 
 if __name__=="__main__":
     app.run(debug=True)

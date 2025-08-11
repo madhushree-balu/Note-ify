@@ -11,14 +11,15 @@ create table if not exists user (
 
 notes_table = """
 create table if not exists notes(
-    noteid integer primary key autoincrement,
+    noteid integer  ,
     username char(200),
     title varchar(255),
     content text,
     created_on datetime default current_timestamp,
     modified_on datetime default current_timestamp,
     star boolean default false,
-    foreign key (username) references user(username)
+    foreign key (username) references user(username),
+    primary key (noteid,username)
 )
 """
 
@@ -102,13 +103,15 @@ def get_latest_created_notes(username):
 def create_note(username,title='',content=''):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
+    noteid=count_username(username)+1
     cur.execute("""
-    insert into notes(username, title, content ) values(?,?,?)
-    """,(username,title,content,))
+    insert into notes(noteid, username, title, content ) values(?,?,?,?)
+    """,(noteid ,username,title,content,))
     conn.commit()
     conn.close()
-    return get_latest_created_notes(username)
+    return noteid
 
+    
 def modify_note(noteid, username, title, content):
     if not get_note(noteid, username):
         return False
@@ -130,6 +133,30 @@ def get_note(noteid, username):
     arr = res.fetchone()
     conn.close()
     return arr
+    
+def delete_note(noteid, username):
+    if not get_note(noteid, username):
+        return False
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    cur.execute("""
+    delete from notes where noteid=? and username=?
+    """,(noteid,username))
+    conn.commit()
+    conn.close()
+    return True
+
+def count_username(username):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""
+    select count(*) from notes where username=?
+    """,(username,))
+    result=res.fetchone()[0]    
+    conn.close()
+    return result
+
+
     
 
 
