@@ -125,7 +125,8 @@ def create_note(username,title='',content=''):
     conn.close()
     return noteid
 
-    
+
+# TODO - update this function to change the fac and public also    
 def modify_note(noteid, username, title, content, fav, public):
     if not get_note(noteid, username):
         return False
@@ -162,6 +163,15 @@ def delete_note(noteid, username):
     conn.close()
     return True
 
-
+# TODO
 # A function to toggle fav
+def toggle_fav (noteid, username):
+    ...
+
+
+# TODO
 # A function to check if a note is public
+# name the function as "get_public_note"
+# it should return None if the requred note is not public
+# if the note is public, then it should return the entire note.
+...

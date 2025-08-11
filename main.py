@@ -6,8 +6,30 @@ handler.create_tables()
 app = Flask(__name__)
 app.secret_key = "super secret key"
 
+
+# TODO
+# 1. [ ]
+# check if the session is valid before each request
+# for certain all the endpoints except that of index,
+# login and signin.
+# if the user has not logged in, redirect them to the login page
+# 2. [ ]
+# also make use of "flash" function for proper error messages
+# 3. [ ]
+# review and refine all the code.
+# 4. [ ]
+# implement a "/api/fav/<int:note_id>" endpoint to toggle and return
+# the star value. the return should be in the format: { "success": ?, "star": ? }
+# see through necessary validations
+# 5. [ ]
+# implement a "/api/delete/<int:note_id>" endpoint to delete the note.
+# return the success value
+# 6. [ ]
+# look for other "# TODO" in the code.
+
 @app.get("/")
 def index():
+    
     if 'username' in session:
         notes = handler.get_all_notes( session['username'] )
 
@@ -53,6 +75,11 @@ def signup_post():
     
     return redirect(url_for('signup'))
 
+# TODO
+# instead of /note/<int:note_id> use /<str:username>/<int:note_id>
+# check if the username in the route is equal to that of in the session
+# if so, fetch and return display the note using the function "get_note"
+# if not, fetch and proceed with the function "get_public_note"
 @app.get("/note/<int:note_id>")
 def note(note_id):
     username=session.get('username',None)
@@ -88,19 +115,14 @@ def save(note_id):
     title = data.get('title')
     content = data.get('content')
 
-    # fix this
+    # TODO fix this
     # handler.modify_note(note_id,username,title,content)
     return {
         "success":True
     }
 
-# @app.get("/api/fav/<int:note_id>")
-# def fav(note_id):
-#     # the code to toggle the star and return the bool val
-#     # also implement it in the handler file.
-#     # return { success: ?, star: ? }
-#     ...
 
+# TODO
 # @app.delete("/api/delete/<int:note_id>")
 # def delete(note_id):
 #     # implement the code here to delete the note.
