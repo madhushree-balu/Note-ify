@@ -53,10 +53,11 @@ input#note_title:focus {
     transition: .2s ease-out;
 }
 
-[role="textbox"] > * {
+[role="textbox"]>* {
     border-bottom: 1px solid #ffffff09;
 }
-[role="textbox"] > *:last-child {
+
+[role="textbox"]>*:last-child {
     border-bottom: 1px solid #ffffff00;
 }
 
@@ -67,6 +68,42 @@ input#note_title:focus {
 .content_holder:has(:focus-within) {
     border: 1px solid #fff;
 }
-li, ol {
+
+li,
+ol {
     margin-left: 1em;
+}
+
+div#save {
+    border: 1px solid #fff9;
+    padding: 2px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.star {
+    visibility: hidden;
+    font-size: 30px;
+    cursor: pointer;
+    transition: .3s;
+    color: #fff;
+    position: relative;
+    width: 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.star:before {
+    content: "\2605";
+    position: absolute;
+    visibility: visible;
+    color: #ff0;
+}
+
+.star:checked:before {
+    content: "\2606";
+    position: absolute;
+    color: #ffffe187;
 }

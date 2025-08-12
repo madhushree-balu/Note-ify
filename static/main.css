@@ -1,9 +1,15 @@
+@font-face {
+    font-family: "Chillax";
+    src: url("/static/Chillax_Complete/Fonts/TTF/Chillax-Variable.ttf");;
+}
+
+
 :root {
     --yellow: #FFC857;
-    --white: #F7F0FA;
-    --pink: #E6CDFF;
-    --violet: #6C2C83;
-    --black: #0C050F;
+    --white: #a6a6a6;
+    --pink: #dab5ff;
+    --violet: #2c1c32;
+    --black: #120f15;
 }
 
 * {
@@ -15,11 +21,11 @@
 body {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     width: 100%;
     min-height: 100vh;
     flex-direction: column;
-    font-family: consolas;
+    font-family: "Chillax", consolas;
     font-size: 20px;
     background: var(--black);
     color: #eee;
@@ -46,6 +52,7 @@ body {
     text-decoration: none;
     color: #7b7b7b;
     transition: .2s;
+    font-size: 14px;
 }
 
 
@@ -55,12 +62,9 @@ body {
 }
 
 .right_icons > a:hover {
-    color: #e0e0e0;
+    color: #ffffff;
 }
 
 a {
     color: #e6cdff;
-}
-
-a:hover {
 }

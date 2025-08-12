@@ -42,12 +42,12 @@
     </div>
     <div class="page">
         <div class="title_holder">
-            <input type="text" id="note_title" value="{{ note[2] }}" maxlength="200" required>
+            <input type="text" id="note_title" value="{{ note[2] }}" placeholder="Title Here..." maxlength="200" required />
         </div>
         <div class="desc">
             <p>Created on: {{ note[4] }}</p>
             <p>Last modified: {{ note[5] }}</p>
-            <p>Starred: {{ 'Yes' if note[6] else 'No' }}</p>
+            <input class="star" type="checkbox" checked="{{'true' if note[6] else 'false' }}" />
             <div id="save">Save</div>
         </div>
 

@@ -1,5 +1,10 @@
 from handlers import handler
-from flask import Flask, render_template, request, session, url_for, redirect
+from flask import (
+    Flask, render_template, request, session,
+    url_for, redirect, send_from_directory,
+    abort
+)
+import os
 
 handler.create_tables()
 
@@ -26,6 +31,17 @@ app.secret_key = "super secret key"
 # return the success value
 # 6. [ ]
 # look for other "# TODO" in the code.
+
+
+
+# static handler
+@app.get("/static/<path:filename>")
+def serve_static(filename):
+    # check if the path actually exists using os
+    if not os.path.exists("static/" + filename):
+        return abort(404)
+    return send_from_directory("static", filename)
+
 
 @app.get("/")
 def index():
