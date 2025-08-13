@@ -18,6 +18,9 @@ app.secret_key = "super secret key"
 # for certain all the endpoints except that of index,
 # login and signin.
 # if the user has not logged in, redirect them to the login page
+@app.before_request
+def before_request():
+    print(request.endpoint)
 # 2. [ ]
 # also make use of "flash" function for proper error messages
 # 3. [ ]
