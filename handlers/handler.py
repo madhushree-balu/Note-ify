@@ -19,6 +19,7 @@ create table if not exists notes(
     modified_on datetime default current_timestamp,
     star boolean default false,
     foreign key (username) references user(username),
+    public boolean default false,
     primary key (noteid,username)
 )
 """
@@ -166,7 +167,35 @@ def delete_note(noteid, username):
 # TODO
 # A function to toggle fav
 def toggle_fav (noteid, username):
-    ...
+    if not get_note(noteid, username):
+        return False
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    if get_fav(noteid, username):
+        cur.execute("""
+        update notes set star=False where noteid=? and username=?
+        """,(noteid,username))
+    else:
+        cur.execute("""
+        update notes set star=true where noteid=? and username=?
+        """,(noteid,username))
+    conn.commit()
+    conn.close()
+    return True
+def get_fav (noteid, username):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""
+    select star from notes where noteid=? and username=?
+    """,(noteid,username))
+    result=res.fetchone()
+    conn.commit()
+    conn.close()
+    return result[0] if result else None
+
+
+
+
 
 
 # TODO
@@ -174,4 +203,4 @@ def toggle_fav (noteid, username):
 # name the function as "get_public_note"
 # it should return None if the requred note is not public
 # if the note is public, then it should return the entire note.
-...
+

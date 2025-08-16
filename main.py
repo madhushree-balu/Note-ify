@@ -2,7 +2,7 @@ from handlers import handler
 from flask import (
     Flask, render_template, request, session,
     url_for, redirect, send_from_directory,
-    abort
+    abort,flash
 )
 import os
 
@@ -20,18 +20,37 @@ app.secret_key = "super secret key"
 # if the user has not logged in, redirect them to the login page
 @app.before_request
 def before_request():
-    print(request.endpoint)
+    if request.endpoint not in ['index','login','signup']:
+        if 'username' not in session:
+            return redirect(url_for('login'))
 # 2. [ ]
 # also make use of "flash" function for proper error messages
+
 # 3. [ ]
 # review and refine all the code.
 # 4. [ ]
 # implement a "/api/fav/<int:note_id>" endpoint to toggle and return
 # the star value. the return should be in the format: { "success": ?, "star": ? }
 # see through necessary validations
+@app.get("/api/fav/<int:note_id>")
+def fav(note_id):
+    username=session.get('username',None)
+    if username is None:
+        return redirect(url_for('login'))
+    
+    return {"success":True,"star":handler.toggle_fav(note_id,username)}
+
 # 5. [ ]
 # implement a "/api/delete/<int:note_id>" endpoint to delete the note.
 # return the success value
+@app.get("/api/delete/<int:note_id>")
+def delete(note_id):
+    username=session.get('username',None)
+    if username is None:
+        return redirect(url_for('login'))
+    
+    return handler.delete_note(note_id,username)
+
 # 6. [ ]
 # look for other "# TODO" in the code.
 
@@ -69,6 +88,7 @@ def login_post():
     if handler.match_passsword(uname,paswd):
         session['username']=uname
         return redirect(url_for('index'))
+    flash("Invalid username or password")
     return redirect(url_for('login'))
 
 
@@ -91,7 +111,7 @@ def signup_post():
     if handler.create_user(uname,email,passwd):
         session['username'] = uname
         return redirect(url_for('index')) # changed here
-    
+    flash('User already exists  or email already exists')
     return redirect(url_for('signup'))
 
 # TODO
@@ -108,7 +128,7 @@ def note(note_id):
 
     if not note:
         return redirect(url_for('index'))
-
+    
     return render_template( "/note.html", note=note )
 
 @app.get("/new")
@@ -133,6 +153,10 @@ def save(note_id):
     
     title = data.get('title')
     content = data.get('content')
+    fav = data.get('star', False)
+    public = data.get('public', False)
+
+    handler.modify_note(note_id,username,title,content,fav,public)
 
     # TODO fix this
     # handler.modify_note(note_id,username,title,content)
