@@ -20,7 +20,7 @@ app.secret_key = "super secret key"
 # if the user has not logged in, redirect them to the login page
 @app.before_request
 def before_request():
-    if request.endpoint not in ['index','login','signup']:
+    if request.path not in ['/','/login','/signup']:
         if 'username' not in session:
             return redirect(url_for('login'))
 # 2. [ ]

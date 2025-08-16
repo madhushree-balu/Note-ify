@@ -76,10 +76,12 @@ def match_passsword(username,password):
 def create_user(username, email, password) -> bool:
     # check if the username already exists here
     if get_userby_username(username):
+        print("handler.create_user:: username already exists")
         return False
 
     # check if the email already exists here:
     if get_userby_email(email):
+        print("handler.create_user:: email already exists")
         return False
 
     # hash the password
@@ -91,6 +93,7 @@ def create_user(username, email, password) -> bool:
     """,(username,email,hashed_password))
     conn.commit()
     conn.close()
+    print("handler.create_user:: account created")
     return True
 
 
