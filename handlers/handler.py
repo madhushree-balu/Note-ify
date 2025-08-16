@@ -207,3 +207,15 @@ def get_fav (noteid, username):
 # it should return None if the requred note is not public
 # if the note is public, then it should return the entire note.
 
+def get_public(noteid,username):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""
+    select * from notes where noteid=? and username=? and public=true
+    """,(noteid,username,))
+    result=res.fetchone()
+    conn.close()
+    return result 
+
+
+

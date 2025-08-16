@@ -41,7 +41,7 @@
         </a>
         <ul>
             {% for note in notes %}
-            <a href="/note/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
+            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
                 <div class="preview">
                     <p>
                         {{ note[3] }}

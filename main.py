@@ -50,7 +50,8 @@ def delete(note_id):
 # 6. [ ]
 # look for other "# TODO" in the code.
 
-
+#7[]
+#to check and uncheck the star and public function which does not work
 
 # static handler
 @app.get("/static/<path:filename>")
@@ -66,8 +67,8 @@ def index():
     
     if 'username' in session:
         notes = handler.get_all_notes( session['username'] )
-
-        return render_template('notes.html', notes=notes)
+        print(notes)
+        return render_template('notes.html', notes=notes,username = session.get('username'))
     return render_template('index.html')
 
 
@@ -115,16 +116,16 @@ def signup_post():
 # check if the username in the route is equal to that of in the session
 # if so, fetch and return display the note using the function "get_note"
 # if not, fetch and proceed with the function "get_public_note"
-@app.get("/note/<int:note_id>")
-def note(note_id):
+@app.get("/<string:uname>/<int:note_id>")
+def note(note_id,uname):
     username=session.get('username',None)
-    if username is None:
-        return redirect(url_for('login'))
-    note = handler.get_note(note_id,username)
-
+    if uname == username or handler.get_public(note_id,uname) is not None:
+        note = handler.get_note(note_id,uname)
+    else:
+        note = None
     if not note:
         return redirect(url_for('index'))
-    
+        
     return render_template( "/note.html", note=note )
 
 @app.get("/new")
@@ -133,13 +134,13 @@ def new():
     if username is None:
         return redirect(url_for('login'))
     note_id=handler.create_note(username)
-    return redirect(url_for('note',note_id=note_id))
+    return redirect(url_for('note',note_id=note_id,uname=username))
 
 
-@app.post("/api/save/<int:note_id>")
-def save(note_id):
+@app.post("/api/save/<string:uname>/<int:note_id>")
+def save(note_id,uname):
     username=session.get('username',None)
-    if username is None:
+    if username is None or uname != username:
         return {
             "success":False
         }

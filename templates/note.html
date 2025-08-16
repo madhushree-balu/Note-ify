@@ -47,7 +47,9 @@
         <div class="desc">
             <p>Created on: {{ note[4] }}</p>
             <p>Last modified: {{ note[5] }}</p>
-            <input class="star" type="checkbox" checked="{{'true' if note[6] else 'false' }}" />
+            <input type="text" id="username" value="{{ note[1] }}"  maxlength="200" required />
+            <input class="star" id="star" type="checkbox" checked="{{'true' if note[6] else 'false' }}" />
+            <input class="public" id="public" type="checkbox" checked="{{'true' if note[7] else 'false' }}" />
             <div id="save">Save</div>
         </div>
 
@@ -82,15 +84,20 @@
                     return serializer(view.state.doc);
                 });
                 let note_title = document.querySelector("#note_title").value;
+                let username=document.querySelector("#username").value;
                 let note_id = window.location.pathname.split("/")[2];
-                let response = await fetch("/api/save/" + note_id, {
+                let favourite=document.querySelector("#star").value;
+                let publics=document.querySelector("#public").value;
+                let response = await fetch("/api/save/" + username+ "/" + note_id, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         "title": note_title,
-                        "content": note_content
+                        "content": note_content,
+                        "star":favourite,
+                        "public":publics
                     })
                 });
                 let data = await response.json();
