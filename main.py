@@ -35,9 +35,7 @@ def before_request():
 @app.get("/api/fav/<int:note_id>")
 def fav(note_id):
     username=session.get('username',None)
-    if username is None:
-        return redirect(url_for('login'))
-    
+     
     return {"success":True,"star":handler.toggle_fav(note_id,username)}
 
 # 5. [ ]
@@ -46,10 +44,8 @@ def fav(note_id):
 @app.get("/api/delete/<int:note_id>")
 def delete(note_id):
     username=session.get('username',None)
-    if username is None:
-        return redirect(url_for('login'))
     
-    return handler.delete_note(note_id,username)
+    return {"success":handler.delete_note(note_id,username)}
 
 # 6. [ ]
 # look for other "# TODO" in the code.

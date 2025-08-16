@@ -18,8 +18,8 @@ create table if not exists notes(
     created_on datetime default current_timestamp,
     modified_on datetime default current_timestamp,
     star boolean default false,
-    foreign key (username) references user(username),
     public boolean default false,
+    foreign key (username) references user(username),
     primary key (noteid,username)
 )
 """
