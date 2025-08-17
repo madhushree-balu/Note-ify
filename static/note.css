@@ -80,30 +80,3 @@ div#save {
     border-radius: 50px;
     cursor: pointer;
 }
-
-.star {
-    visibility: hidden;
-    font-size: 30px;
-    cursor: pointer;
-    transition: .3s;
-    color: #fff;
-    position: relative;
-    width: 30px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.star:before {
-    content: "\2605";
-    position: absolute;
-    visibility: visible;
-    color: #ff0;
-}
-
-.star:checked:before {
-    content: "\2606";
-    position: absolute;
-    color: #ffffe187;
-}

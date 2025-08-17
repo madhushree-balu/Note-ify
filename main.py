@@ -108,7 +108,7 @@ def signup_post():
     if handler.create_user(uname,email,passwd):
         session['username'] = uname
         return redirect(url_for('index')) # changed here
-    flash('User already exists  or email already exists')
+    print('User already exists  or email already exists')
     return redirect(url_for('signup'))
 
 # TODO
@@ -152,7 +152,7 @@ def save(note_id,uname):
     content = data.get('content')
     fav = data.get('star', False)
     public = data.get('public', False)
-
+    print(title,content,fav,public)
     handler.modify_note(note_id,username,title,content,fav,public)
 
     # TODO fix this

@@ -137,8 +137,9 @@ def modify_note(noteid, username, title, content, fav, public):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
     cur.execute("""
-    update notes set title=?,content=? where noteid=? and username=?
-    """,(title,content,noteid,username))
+    update notes set title=?,content=?, star=?, public=? where noteid=? and username=?
+    """,(title,content,fav,public,noteid,username,))
+    print(title,content,fav,public,noteid,username)
     conn.commit()
     conn.close()
     return True
@@ -174,17 +175,15 @@ def toggle_fav (noteid, username):
         return False
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
-    if get_fav(noteid, username):
-        cur.execute("""
-        update notes set star=False where noteid=? and username=?
-        """,(noteid,username))
-    else:
-        cur.execute("""
-        update notes set star=true where noteid=? and username=?
-        """,(noteid,username))
+    favourite=get_fav(noteid, username)
+    
+    cur.execute("""
+    update notes set star=? where noteid=? and username=?
+    """,(not favourite,noteid,username))
+
     conn.commit()
     conn.close()
-    return True
+    return not favourite
 def get_fav (noteid, username):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
