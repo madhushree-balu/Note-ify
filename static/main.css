@@ -27,7 +27,7 @@ body {
     flex-direction: column;
     font-family: "Chillax", consolas;
     font-size: 20px;
-    background: var(--black);
+    background: #ffffff;
     color: #eee;
 }
 
@@ -50,7 +50,7 @@ body {
 .right_icons > a {
     padding: 5px 25px;
     text-decoration: none;
-    color: #7b7b7b;
+    color: #4f4f4f;
     transition: .2s;
     font-size: 14px;
 }
@@ -62,9 +62,46 @@ body {
 }
 
 .right_icons > a:hover {
-    color: #ffffff;
+    color: #ff5a0a;
 }
 
 a {
     color: #e6cdff;
+}
+
+
+
+
+.star {
+    visibility: hidden;
+    font-size: 30px;
+    cursor: pointer;
+    transition: .3s;
+    color: #fff;
+    position: relative;
+    width: 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.star:before {
+    content: "\2764";
+    position: absolute;
+    visibility: visible;
+    color: #aaaaaa;
+    -webkit-text-stroke: 2px;
+    -webkit-text-stroke-color: #161616;
+    font-size: 25px;
+    transition: .25s ease;
+}
+
+.star:checked:before {
+    content: "\2764";
+    position: absolute;
+    visibility: visible;
+    color: #ff5a0a;
+    font-size: 35px;
 }

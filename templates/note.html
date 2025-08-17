@@ -48,9 +48,11 @@
             <p>Created on: {{ note[4] }}</p>
             <p>Last modified: {{ note[5] }}</p>
             <input type="text" id="username" value="{{ note[1] }}"  maxlength="200" required />
+            {% if not public_access %}
             <input class="star" id="star" type="checkbox" {{"checked" if note[6] else ""}} />
             <input class="public" id="public" type="checkbox" {{"checked" if note[7] else ""}} />
             <div id="save">Save</div>
+            {% endif %}
         </div>
 
         <div class="content_holder">

@@ -5,63 +5,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note-ify | Home</title>
-    <link rel="stylesheet" href=" {{ url_for( 'static', filename='main.css' ) }} ">
-    <link rel="stylesheet" href=" {{ url_for( 'static', filename='notes.css' ) }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='notes.css') }}">
+
+    <!-- Milkdown styles -->
+    <!-- Milkdown Crepe styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/common/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/frame/style.css">
 </head>
 
 <body>
 
+
     <div class="top_bar">
         <div class="top_container">
-            <div class="left_icon">
-                <a href="/">🏠</a>
-            </div>
+            <div class="left_icon"> <a href="/">🏠</a> </div>
             <div class="text">
                 <p>Note-ify</p>
-            </div>
-            {% if not session.get('username') %}
-            <div class="right_icons">
-                <a href="/login">Login</a>
-                <a href="/signup">Signup</a>
-            </div>
-            {% else %}
-            <div class="right_icons">
-                <a href="/profile">{{ session.get('username') }}</a>
-                <a href="/logout">Logout</a>
-            </div>
-            {% endif %}
+            </div> {% if not session.get('username') %} <div class="right_icons"> <a href="/login">Login</a> <a
+                    href="/signup">Signup</a> </div> {% else %} <div class="right_icons"> <a href="/profile">{{
+                    session.get('username') }}</a> <a href="/logout">Logout</a> </div> {% endif %}
         </div>
     </div>
 
 
     <div class="notes">
-        <a href="/new" class="new" onclick="fadeScreen()">
-            <div class="new-icon">+</div>
-            <div class="new-text">New Note</div>
-        </a>
         <ul>
             {% for note in notes %}
             <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
                 <div class="preview">
-                    <p>
-                        {{ note[3] }}
-                    </p>
+                    <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
                 </div>
                 <div class="down">
                     <h5>Note: {{ note[2] }}</h5>
+                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] else "" }}>
                 </div>
-
             </a>
             {% endfor %}
         </ul>
     </div>
+
+    <div class="notes">
+        <ul>
+            {% for note in notes %}
+            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
+                <div class="preview">
+                    <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
+                </div>
+                <div class="down">
+                    <h5>Note: {{ note[2] }}</h5>
+                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] else "" }}>
+                </div>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Alternative: Use marked.js for simpler markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.1/marked.min.js"></script>
+    
+    <script type="module">
+        // Fallback to using marked.js for markdown rendering (more reliable)
+        document.addEventListener('DOMContentLoaded', function() {
+            const previews = document.querySelectorAll('[id^="preview_"]');
+            
+            previews.forEach(preview => {
+                const content = preview.dataset.content || '';
+                
+                try {
+                    // Use marked.js to parse markdown
+                    const html = marked.parse(content);
+                    preview.innerHTML = `<div style="padding: 8px; font-size: 14px; line-height: 1.4;">${html}</div>`;
+                } catch (error) {
+                    console.error('Error parsing markdown:', error);
+                    // Ultimate fallback to plain text
+                    preview.innerHTML = `<div style="padding: 8px; font-size: 14px;">${content}</div>`;
+                }
+            });
+        });
+
+        // Handle star checkbox clicks (prevent navigation when clicking star)
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('star')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Add your star toggle logic here
+                const noteId = e.target.name.replace('fav_', '');
+                // Example: sendStarToggle(noteId, e.target.checked);
+            }
+        });
+    </script>
 </body>
-<script>
-
-function fadeScreen() {
-    alert("Not implemented")
-}
-
-</script>
 
 </html>
