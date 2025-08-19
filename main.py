@@ -146,7 +146,7 @@ def save(note_id,uname):
 
 
 
-@app.get("/api/fav/<int:note_id>")
+@app.post("/api/fav/<int:note_id>")
 def fav(note_id):
     username=session.get('username',None)
     return {"success":True,"star":handler.toggle_fav(note_id,username)}

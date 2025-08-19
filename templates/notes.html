@@ -42,13 +42,23 @@
     </div>
 
 
+    <div class="filters">
+        <div class="filter">
+            <input type="checkbox" id="public" name="public" value="public">
+            <label for="public">Public</label>
+        </div>
+        <div class="filter">
+            <input type="checkbox" id="starred" name="starred" value="starred">
+            <label for="starred">Starred</label>
+        </div>
+    </div>
 
 
     <div class="notes">
 
         <ul>
             {% for note in notes %}
-            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
+            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred-note' if note[6] else '' }} {{ 'public-note' if note[7] else '' }}">
                 <div class="preview">
                     <kbd>{{ note[5] }}</kbd>
                     <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
@@ -56,7 +66,7 @@
                 <div class="down">
                     <h6>#{{ note[0] }}</h6>
                     <h5>{{ note[2] }}</h5>
-                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] }}>
+                    <input note-id="{{ note[0] }}" name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] }}>
                 </div>
             </a>
             {% endfor %}
@@ -86,17 +96,61 @@
             });
         });
 
-        // Handle star checkbox clicks (prevent navigation when clicking star)
-        // document.addEventListener('click', function (e) {
-        //    if (e.target.classList.contains('star')) {
-        //        e.preventDefault();
-        //        e.stopPropagation();
-//
-        //        // Add your star toggle logic here
-        //        const noteId = e.target.name.replace('fav_', '');
-        //        // Example: sendStarToggle(noteId, e.target.checked);
-        //    }
-        //});
+
+        // add the filters
+        const publicFilter = document.getElementById('public');
+        const starredFilter = document.getElementById('starred');
+
+        publicFilter.addEventListener('change', () => {
+            filterNotes();
+        });
+
+        starredFilter.addEventListener('change', () => {
+            filterNotes();
+        });
+
+        function filterNotes() {
+            const notes = document.querySelectorAll('.note');
+            notes.forEach(note => {
+                const isPublic = note.classList.contains('public-note');
+                const isStarred = note.classList.contains('starred-note');
+                const shouldShow = (!publicFilter.checked || isPublic) && (!starredFilter.checked || isStarred);
+                note.style.display = shouldShow ? 'flex' : 'none';
+            });
+        }
+
+
+         // Handle star checkbox clicks (prevent navigation when clicking star)`
+         document.addEventListener('click', async function (e) {
+            if (e.target.classList.contains('star')) {
+                const noteId = e.target.name.replace('fav_', '');
+                const checked = e.target.checked;
+                e.preventDefault();
+                await fetch('/api/fav/' + noteId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "star": checked
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            if (data.success) {
+                                e.target.checked = data.star;
+                            }
+                        })
+                    } else {
+                        console.error('Error updating star status');
+                    }
+                }).catch(error => {
+                    console.error('Error updating star status:', error);
+                });
+
+            }
+        });
+        
     </script>
 </body>
 
