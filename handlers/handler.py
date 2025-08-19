@@ -130,7 +130,7 @@ def create_note(username,title='',content=''):
     return noteid
 
 
-# TODO - update this function to change the fac and public also    
+
 def modify_note(noteid, username, title, content, fav, public):
     if not get_note(noteid, username):
         return False
@@ -168,8 +168,7 @@ def delete_note(noteid, username):
     conn.close()
     return True
 
-# TODO
-# A function to toggle fav
+
 def toggle_fav (noteid, username):
     if not get_note(noteid, username):
         return False
@@ -184,6 +183,9 @@ def toggle_fav (noteid, username):
     conn.commit()
     conn.close()
     return not favourite
+
+
+
 def get_fav (noteid, username):
     conn=sqlite3.connect('noteify.db')
     cur=conn.cursor()
@@ -196,15 +198,6 @@ def get_fav (noteid, username):
     return result[0] if result else None
 
 
-
-
-
-
-# TODO
-# A function to check if a note is public
-# name the function as "get_public_note"
-# it should return None if the requred note is not public
-# if the note is public, then it should return the entire note.
 
 def get_public(noteid,username):
     conn=sqlite3.connect('noteify.db')

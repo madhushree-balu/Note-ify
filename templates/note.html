@@ -12,7 +12,7 @@
         .ProseMirror {
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #eceff4;
+            color: #4b4b4b;
         }
     </style>
 
@@ -24,8 +24,8 @@
             <div class="left_icon">
                 <a href="/">🏠</a>
             </div>
-            <div class="text">
-                <p>Note-ify</p>
+            <div class="title_holder">
+                <input type="text" id="note_title" value="{{ note[2] }}" placeholder="Title Here..." maxlength="200" {{ readonly if public_access }} required />
             </div>
             {% if not session.get('username') %}
             <div class="right_icons">
@@ -33,26 +33,28 @@
                 <a href="/signup">Signup</a>
             </div>
             {% else %}
-            <div class="right_icons">
-                <a href="/profile">{{ session.get('username') }}</a>
-                <a href="/logout">Logout</a>
-            </div>
+                <div class="right_icons">
+                    {% if not public_access %}
+                        <input class="star" id="star" type="checkbox" {{"checked" if note[6] else ""}} />
+                        <input class="public" id="public" type="checkbox" {{"checked" if note[7] else ""}} />
+                        <div id="delete">Delete</div>
+                        <div id="save">Save</div>
+                    {% else %}
+                        <div id="save">Clone</div>
+                    {% endif %}
+                </div>
             {% endif %}
         </div>
     </div>
     <div class="page">
-        <div class="title_holder">
-            <input type="text" id="note_title" value="{{ note[2] }}" placeholder="Title Here..." maxlength="200" required />
-        </div>
+
         <div class="desc">
+            <input type="text" id="username" value="{{ note[1] }}" readonly />
             <p>Created on: {{ note[4] }}</p>
             <p>Last modified: {{ note[5] }}</p>
-            <input type="text" id="username" value="{{ note[1] }}"  maxlength="200" required />
-            {% if not public_access %}
-            <input class="star" id="star" type="checkbox" {{"checked" if note[6] else ""}} />
-            <input class="public" id="public" type="checkbox" {{"checked" if note[7] else ""}} />
-            <div id="save">Save</div>
-            {% endif %}
+        </div>
+        
+
         </div>
 
         <div class="content_holder">
@@ -78,6 +80,15 @@
                 .use(nord)        // dark-ready Nord theme
                 .use(commonmark)  // Markdown support
                 .create();
+            
+
+            document.getElementById('delete').addEventListener('click', async () => {
+                if (confirm("Are you sure you want to delete this note! This action cannot be undone.")) {
+                    let note_id = window.location.pathname.split("/")[2];
+                    window.location.href = "/api/delete/" + note_id;
+                }
+            });
+
 
             document.getElementById('save').addEventListener('click', async () => {
                 const note_content = await editor.action((ctx) => {

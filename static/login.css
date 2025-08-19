@@ -36,7 +36,7 @@ form > div input {
     background: #fff1;
     padding: 7px 20px;
     border-radius: 50px;
-    color: #e6cdff;
+    color: #c143f0;
     font-size: 18px;
     font-family: consolas;
 }
@@ -48,10 +48,12 @@ form label {
 button[type=submit] {
     padding: 5px 30px;
     border-radius: 50px;
-    border: 1px solid #e6cdff;
-    color: #e6cdff;
+    border: 1px solid #0c050f;
+    color: #dab5ff;
     background-color: #0c050f;
     outline: none;
     font-size: 18px;
     margin-top: 10px;
+    cursor: pointer;
+    transition: .2s ease;
 }

@@ -1,9 +1,11 @@
 .preview {
     overflow: hidden;
-    width: 240px;
-    aspect-ratio: 2.5 / 0.8;
+    width: 100%;
+    height: 145px;
     display: flex;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
     padding: 10px;
     padding-top: 20px;
     flex-grow: 1;
@@ -11,22 +13,22 @@
 
 ul {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 30px;
     max-width: 80%;
     flex-wrap: wrap;
-    flex-grow: 1;
 }
 
 .notes {
+    padding: 10%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     width: 100%;
-    min-height: 80vh;
     gap: 30px;
+    flex-grow: 1;
 }
 
 .preview p {
@@ -66,7 +68,7 @@ ul {
     height: 50px;
     overflow: hidden;
     position: absolute;
-    bottom: 0;
+    top: 0;
 }
 
 
@@ -75,12 +77,12 @@ a.note {
     border: 2px solid #000000;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: flex-end;
+    flex-direction: column-reverse;
     gap: 10px;
     border-radius: 21px;
     padding: 2px;
-    overflow: hidden;
+    overflow: clip;
     text-decoration: none;
     color: #000;
     /* aspect-ratio: 2 / 1; */
@@ -94,7 +96,7 @@ a.note {
 
 a.note:hover {
     opacity: 1;
-    box-shadow: -14px 14px 0 -5px #ff5a0a73;
+    box-shadow: -14px 14px 0 -5px #dab5ff;
     height: 200px;
 }
 
@@ -113,17 +115,16 @@ a.note:hover .preview p {
 
 
 a.new {
-    position: fixed;
+    position: relative;
     z-index: 100;
-    bottom: 20px;
-    left: 25px;
     display: flex;
     align-items: center;
+    flex-direction: row-reverse;
     justify-content: flex-start;
     gap: 0px;
     width: 35px;
-    color: #e6cdff;
-    border: 1px solid;
+    color: #872ea8;
+    border: 2px solid;
     border-radius: 50px;
     padding: 0px 0px;
     text-decoration: none;
@@ -146,20 +147,32 @@ a.new .new-icon {
 
 a.new .new-text {
     position: absolute;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-weight: 500;
-
     min-width: 170px;
     width: 170px;
     padding-left: 10px;
-    padding-bottom: 4px;
 }
 
 a.new:hover {
-    width: 160px;
+    width: 140px;
     opacity: 1;
+}
+
+.down h6 {
+    color: #dab5ff8f;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+div.preview > div {
+    max-height: 110px;
+}
+
+kbd {
+    font-size: 14px;
+    width: 100%;
+    text-align: right;
 }

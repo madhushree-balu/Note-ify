@@ -22,39 +22,41 @@
             <div class="left_icon"> <a href="/">🏠</a> </div>
             <div class="text">
                 <p>Note-ify</p>
-            </div> {% if not session.get('username') %} <div class="right_icons"> <a href="/login">Login</a> <a
-                    href="/signup">Signup</a> </div> {% else %} <div class="right_icons"> <a href="/profile">{{
-                    session.get('username') }}</a> <a href="/logout">Logout</a> </div> {% endif %}
+            </div> 
+            {% if not session.get('username') %} 
+                <div class="right_icons"> 
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a> 
+                </div> 
+            {% else %} 
+                <div class="right_icons">
+                    <a href="/new" class="new">
+                        <div class="new-icon">+</div>
+                        <div class="new-text">New Note</div>
+                    </a> 
+                    <a href="/profile">{{session.get('username') }}</a>
+                    <a href="/logout">Logout</a>
+                </div> 
+            {% endif %}
         </div>
     </div>
 
 
-    <div class="notes">
-        <ul>
-            {% for note in notes %}
-            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
-                <div class="preview">
-                    <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
-                </div>
-                <div class="down">
-                    <h5>Note: {{ note[2] }}</h5>
-                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] else "" }}>
-                </div>
-            </a>
-            {% endfor %}
-        </ul>
-    </div>
+
 
     <div class="notes">
+
         <ul>
             {% for note in notes %}
             <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred' if note[6] else '' }}">
                 <div class="preview">
+                    <kbd>{{ note[5] }}</kbd>
                     <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
                 </div>
                 <div class="down">
-                    <h5>Note: {{ note[2] }}</h5>
-                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] else "" }}>
+                    <h6>#{{ note[0] }}</h6>
+                    <h5>{{ note[2] }}</h5>
+                    <input name="fav_{{ note[0] }}" type="checkbox" class="star" {{ "checked" if note[6] }}>
                 </div>
             </a>
             {% endfor %}
@@ -63,15 +65,15 @@
 
     <!-- Alternative: Use marked.js for simpler markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@5.1.1/marked.min.js"></script>
-    
+
     <script type="module">
         // Fallback to using marked.js for markdown rendering (more reliable)
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const previews = document.querySelectorAll('[id^="preview_"]');
-            
+
             previews.forEach(preview => {
                 const content = preview.dataset.content || '';
-                
+
                 try {
                     // Use marked.js to parse markdown
                     const html = marked.parse(content);
@@ -85,16 +87,16 @@
         });
 
         // Handle star checkbox clicks (prevent navigation when clicking star)
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('star')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Add your star toggle logic here
-                const noteId = e.target.name.replace('fav_', '');
-                // Example: sendStarToggle(noteId, e.target.checked);
-            }
-        });
+        // document.addEventListener('click', function (e) {
+        //    if (e.target.classList.contains('star')) {
+        //        e.preventDefault();
+        //        e.stopPropagation();
+//
+        //        // Add your star toggle logic here
+        //        const noteId = e.target.name.replace('fav_', '');
+        //        // Example: sendStarToggle(noteId, e.target.checked);
+        //    }
+        //});
     </script>
 </body>
 

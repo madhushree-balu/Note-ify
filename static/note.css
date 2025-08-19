@@ -9,13 +9,13 @@
 
 input#note_title {
     font-size: 32px;
-    color: #fff;
+    color: #252525;
     background: none;
     outline: none;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10%;
     width: 100%;
-    text-align: center;
+    text-align: left;
     border: 1px solid #fff0;
     transition: .2s ease-out;
 }
@@ -33,23 +33,28 @@ input#note_title:focus {
 }
 
 .desc {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     padding: 10px 20px;
+    width: 300px;
+    font-size: 15px;
+    border-radius: 20px;
+    border: 2px solid #777;
 }
 
 .content_holder {
     min-height: 1em;
-    min-width: 80%;
+    min-width: 90%;
     border: 1px solid #474747;
     margin-top: 20px;
     font-size: 20px;
     line-height: normal;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 20px;
     transition: .2s ease-out;
 }
 
