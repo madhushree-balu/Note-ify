@@ -58,7 +58,7 @@
 
         <ul>
             {% for note in notes %}
-            <a href="/{{ note[1] }}/{{ note[0] }}" class="note {{ 'starred-note' if note[6] else '' }} {{ 'public-note' if note[7] else '' }}">
+            <a href="/{{ note[1] }}/{{ note[0] }}" class="note id_{{note[0]}} {{ 'starred-note' if note[6] else '' }} {{ 'public-note' if note[7] else '' }}">
                 <div class="preview">
                     <kbd>{{ note[5] }}</kbd>
                     <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
@@ -125,6 +125,7 @@
             if (e.target.classList.contains('star')) {
                 const noteId = e.target.name.replace('fav_', '');
                 const checked = e.target.checked;
+                const currentA = document.querySelector(`.id_${noteId}`);
                 e.preventDefault();
                 await fetch('/api/fav/' + noteId, {
                     method: 'POST',
@@ -139,6 +140,16 @@
                         response.json().then(data => {
                             if (data.success) {
                                 e.target.checked = data.star;
+                                console.log(data.star)
+                                if (data.star) {
+                                    if (!currentA.classList.contains('starred-note')) {
+                                        currentA.classList.add('starred-note')
+                                    }
+                                } else {
+                                    if (currentA.classList.contains('starred-note')) {
+                                        currentA.classList.remove('starred-note')
+                                    }
+                                }
                             }
                         })
                     } else {
