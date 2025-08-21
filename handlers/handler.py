@@ -207,7 +207,18 @@ def get_public(noteid,username):
     """,(noteid,username,))
     result=res.fetchone()
     conn.close()
-    return result 
+    return result
+ 
+def toggle_public(note_id,username):
+    conn=sqlite3.connect("noteify.db")
+    cur=conn.cursor()
+    public=get_public(note_id, username)
+    cur.execute("""
+    update notes set public=? where noteid=? and username=?
+    """,(not public,note_id,username))
+    conn.commit()
+    conn.close()
+    return not public
 
 
 

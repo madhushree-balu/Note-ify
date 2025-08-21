@@ -152,6 +152,11 @@ def fav(note_id):
     return {"success":True,"star":handler.toggle_fav(note_id,username)}
 
 
+@app.post("/api/pub/<int:note_id>")
+def public(note_id):
+    username=session.get('username',None)
+    return {"success":True,"public":handler.toggle_public(note_id,username)}
+
 
 @app.get("/api/delete/<int:note_id>")
 def delete(note_id):
