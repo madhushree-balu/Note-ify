@@ -49,9 +49,32 @@
     <div class="page">
 
         <div class="desc">
-            <input type="text" id="username" value="{{ note[1] }}" readonly />
-            <p>Created on: {{ note[4] }}</p>
-            <p>Last modified: {{ note[5] }}</p>
+            <table>
+                <tr>
+                    <td>
+                        <p>Author:</p>
+                    </td>
+                    <td>
+                        <input type="text" id="username" value="{{ note[1] }}" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Created On
+                    </td>
+                    <td>
+                        <p>{{ note[4] }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Last Modified
+                    </td>
+                    <td>
+                        <p>{{ note[5] }}</p>
+                    </td>
+                </tr>
+            </table>
         </div>
         
 

@@ -1,10 +1,14 @@
 .page {
-    width: 100%;
     display: flex;
-    align-items: center;
+    width: 90%;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
+    border-radius: 20px;
     gap: 10px;
+    position: relative;
+    z-index: 1;
+    transition: .2s ease;
 }
 
 input#note_title {
@@ -35,26 +39,24 @@ input#note_title:focus {
 .desc {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     flex-direction: column;
     flex-wrap: wrap;
-    padding: 10px 20px;
-    width: 300px;
     font-size: 15px;
     border-radius: 20px;
-    border: 2px solid #777;
 }
 
 .content_holder {
     min-height: 1em;
     min-width: 90%;
+    flex-grow: 0.7;
     border: 1px solid #474747;
     margin-top: 20px;
     font-size: 20px;
     line-height: normal;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     transition: .2s ease-out;
 }
 
@@ -87,8 +89,24 @@ div#save {
 }
 
 input#username {
-    text-align: center;
-    border-radius: 15px;
-    opacity: .7;
+    text-align: right;
     border: none;
+    width: min-content;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+body:has(input#note_title:focus) .page {
+    transform: translate(0px, 70px);
+}
+
+p {
+    color: #000;
+}
+
+tr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
