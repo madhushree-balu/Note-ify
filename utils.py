@@ -15,7 +15,8 @@ def prompt_gemini(prompt: str) -> dict:
     
 
 def continue_writing():
-    ...
+    
+
 
 
 def summarize():
