@@ -1,11 +1,9 @@
+import os  # Add this line
 import dotenv
-import os
 from typing import Optional
 import google.generativeai as genai
 
-
 dotenv.load_dotenv(".env")
-
 
 def get_gemini_response(prompt: str, model_name: str = "gemini-1.5-flash", api_key: Optional[str] = None) -> str:
     """
@@ -46,11 +44,11 @@ def get_gemini_response(prompt: str, model_name: str = "gemini-1.5-flash", api_k
         raise Exception(f"Error getting response from Gemini API: {str(e)}")
 
 
-def continue_writing():
-    ...
-
-
-def summarize():
-    ...
-
-
+while True:
+    ui = input("You: ")
+    
+    if ui.lower() == "exit":
+        break
+    
+    response = get_gemini_response(ui)
+    print("Gemini: ", response)

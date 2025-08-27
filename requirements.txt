@@ -1,2 +1,4 @@
 flask
 dotenv
+google-generativeai
+python-dotenv
