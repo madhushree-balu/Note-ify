@@ -84,7 +84,9 @@
             <div id="note_content"></div>
         </div>
         <div>
-            <button id="summarize">summarize</button>
+            <button id="summarize">summarize</button>   
+            <div id="summary"></div>
+
         </div>
 
     </div>
@@ -133,12 +135,14 @@
                 })
                 let data=await response.json()
                 if (data.success){
-                    console.log(data.summarized)
+                    document.getElementById("summary").innerHTML=data.summarized
                 }
                 else{
                     alert("Could not Summarize")
                 }
             });
+
+
 
             document.getElementById('save').addEventListener('click', async () => {
                 const note_content = await editor.action((ctx) => {
