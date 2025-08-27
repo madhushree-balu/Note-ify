@@ -83,6 +83,9 @@
         <div class="content_holder">
             <div id="note_content"></div>
         </div>
+        <div>
+            <button id="summarize">summarize</button>
+        </div>
 
     </div>
 
@@ -111,7 +114,31 @@
                     window.location.href = "/api/delete/" + note_id;
                 }
             });
-
+            document.getElementById('summarize').addEventListener('click', async () => {
+                const note_content = await editor.action((ctx) => {
+                    const view = ctx.get(editorViewCtx);
+                    const serializer = ctx.get(serializerCtx);
+                    return serializer(view.state.doc);
+                });
+                let response=await fetch("/api/summarize",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({                       
+                        "note_content": note_content,
+                        
+                    })
+                   
+                })
+                let data=await response.json()
+                if (data.success){
+                    console.log(data.summarized)
+                }
+                else{
+                    alert("Could not Summarize")
+                }
+            });
 
             document.getElementById('save').addEventListener('click', async () => {
                 const note_content = await editor.action((ctx) => {
@@ -146,6 +173,7 @@
                 }
             });
         }
+        
 
         init();
     </script>

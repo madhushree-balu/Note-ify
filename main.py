@@ -4,6 +4,7 @@ from flask import (
     url_for, redirect, send_file,
     abort,flash
 )
+from gemini_ai import get_gemini_response
 import os
 
 handler.create_tables()
@@ -164,7 +165,25 @@ def delete(note_id):
     handler.delete_note(note_id,username)
     return redirect(url_for('index'))
 
+@app.post("/api/summarize")
+def api_summarize():
+    try:
+        data=request.get_json()
+        content=data.get("note_content")
+        summarized=get_gemini_response(content)
 
+        return {
+            "success":True,
+            "summarized":summarized
+        }
+
+    except Exception as e:
+        return {
+            "success":False,
+            "error":str(e)
+        }
+    
+    
 
 if __name__=="__main__":
     app.run(debug=True)

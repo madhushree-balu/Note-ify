@@ -44,11 +44,4 @@ def get_gemini_response(prompt: str, model_name: str = "gemini-1.5-flash", api_k
         raise Exception(f"Error getting response from Gemini API: {str(e)}")
 
 
-while True:
-    ui = input("You: ")
-    
-    if ui.lower() == "exit":
-        break
-    
-    response = get_gemini_response(ui)
-    print("Gemini: ", response)
+
