@@ -37,7 +37,7 @@ def serve_static(filename):
 @app.get("/")
 def index():
     if 'username' in session:
-        notes = handler.get_all_notes( session['username'] )
+        notes = handler.get_all_notes_for_home_page( session['username'] )
         return render_template('notes.html', notes=notes,username = session.get('username'))
     return render_template('index.html')
 

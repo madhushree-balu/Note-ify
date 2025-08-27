@@ -106,6 +106,30 @@ def get_all_notes(username):
     conn.close()
     return result
 
+def get_all_notes_for_home_page(username):
+    conn=sqlite3.connect('noteify.db')
+    cur=conn.cursor()
+    res=cur.execute("""select * from notes where username=?
+    """,(username,))
+    result=res.fetchall()
+    conn.close()
+    
+    res = []
+    
+    for i in result:
+        res.append((
+            i[0],
+            i[1],
+            i[2],
+            i[3][:200],
+            i[4],
+            i[5],
+            i[6],
+            i[7]
+        ))
+    
+    return res
+
 
 def get_max_note_id(username):
     conn=sqlite3.connect('noteify.db')
