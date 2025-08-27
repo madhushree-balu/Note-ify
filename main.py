@@ -170,6 +170,9 @@ def api_summarize():
     try:
         data=request.get_json()
         content=data.get("note_content")
+        
+        prompt = """I have attached a content below, you have to summarize it in the best possible way, and I strictly need it as a markdown content (I will use milkdown js to parse and display it, so make sure your response aligns with it.) containing only the summary (no need for any acknowledgement or reply for my prompt, just give the summary.)"""
+        
         summarized=get_gemini_response(content)
 
         return {
