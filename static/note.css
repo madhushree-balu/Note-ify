@@ -96,9 +96,6 @@ input#username {
     font-size: 15px;
 }
 
-body:has(input#note_title:focus) .page {
-    transform: translate(0px, 70px);
-}
 
 p {
     color: #000;
