@@ -86,6 +86,10 @@
         <div>
             <button id="summarize">summarize</button>   
             <div id="summary"></div>
+        </div>
+        <div>
+            <button id="generate">Generate</button>
+            <div id="new_generate"></div>
 
         </div>
 
@@ -142,6 +146,31 @@
                 }
             });
 
+            document.getElementById('generate').addEventListener('click', async () => {
+                const note_content = await editor.action((ctx) => {
+                    const view = ctx.get(editorViewCtx);
+                    const serializer = ctx.get(serializerCtx);
+                    return serializer(view.state.doc);
+                });
+                let response=await fetch("/api/generate",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({                       
+                        "note_content": note_content,
+                        
+                    })
+                   
+                })
+                let data=await response.json()
+                if (data.success){
+                    document.getElementById("new_generate").innerHTML=data.generated
+                }
+                else{
+                    alert("Could not Generate")
+                }
+            });
 
 
             document.getElementById('save').addEventListener('click', async () => {

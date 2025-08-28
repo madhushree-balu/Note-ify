@@ -174,7 +174,7 @@ def api_summarize():
         # prompt = """You are a professional summarizer. I have attached a content below, you have to summarize it in the best possible way, and I strictly need it in markdown format (I will use milkdown js to parse and display it, so make sure your response aligns with it, like using # before headings, - for bulletins, etc) containing only the summary (no need for any acknowledgement or reply for my prompt, just give the summary.)\n\nThe Content is:\n"""
         prompt = """Give me a html code with a summary of a given content to put inside a div. Make use of strong ,em,ul,h1,h2,h3,h4,h5,h6,br,p,table if necessary to make it look beautiful . (Do not use style tag)\n The content is : \n"""
         summarized=get_gemini_response(prompt+content)
-
+        summarized = summarized.split("<body>")[-1].split("</body>")[0]
         print(summarized)
         return {
             "success":True,
@@ -186,7 +186,27 @@ def api_summarize():
             "success":False,
             "error":str(e)
         }
-    
+@app.post("/api/generate")
+def api_generate():
+    try:
+        data=request.get_json()
+        content=data.get("note_content")
+        
+        # prompt = """You are a professional summarizer. I have attached a content below, you have to summarize it in the best possible way, and I strictly need it in markdown format (I will use milkdown js to parse and display it, so make sure your response aligns with it, like using # before headings, - for bulletins, etc) containing only the summary (no need for any acknowledgement or reply for my prompt, just give the summary.)\n\nThe Content is:\n"""
+        prompt = """Give me a html code with a notes of a given title to put inside a div. Make use of strong ,em,ul,h1,h2,h3,h4,h5,h6,br,p,table if necessary to make it look beautiful . (Do not use style tag)\n The content is : \n"""
+        generated=get_gemini_response(prompt+content)
+        generated = generated.split("<body>")[-1].split("</body>")[0]
+        print(generated)
+        return {
+            "success":True,
+            "generated":generated
+        }
+
+    except Exception as e:
+        return {
+            "success":False,
+            "error":str(e)
+        }
     
 
 if __name__=="__main__":
