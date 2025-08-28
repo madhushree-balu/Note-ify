@@ -1,214 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Note-ify | Home</title>
-        <link rel="stylesheet"
-            href="{{ url_for('static', filename='main.css') }}">
-        <link rel="stylesheet"
-            href="{{ url_for('static', filename='notes.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note-ify | Home</title>
 
-        <!-- Milkdown styles -->
-        <!-- Milkdown Crepe styles -->
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/common/style.css">
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/frame/style.css">
-    </head>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" />
 
-    <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='new_notes.css') }}">
+
+    <!-- Milkdown styles -->
+    <!-- Milkdown Crepe styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/common/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@milkdown/crepe@7.15.3/lib/theme/frame/style.css">
+</head>
+
+<body>
+
+    <div class="nav_bar" id="nav_bar">
+        <div class="nav_container">
+            <div class="nav_top">
+                <a href="/">Note-ify</a>
+            </div>
+            <hr>
+            <div class="nav_body">
+                <div class="filters_container">
+
+                    <h2>Filters</h2>
+                    <div class="filters">
+                        <div class="filter">
+                            <input type="checkbox" id="public" name="public" value="public">
+                            <label for="public">
+                                <div class="filter_icon">
+                                    <i class="ph ph-check"></i>
+                                </div>
+                                <div class="filter_text">
+                                    Public
+                                </div>
+                            </label>
+                        </div>
+                        <div class="filter">
+                            <input type="checkbox" id="starred" name="starred" value="starred">
+                            <label for="starred">
+                                <div class="filter_icon">
+                                    <i class="ph ph-check"></i>
+                                </div>
+                                <div class="filter_text">
+                                    Favourite
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="links">
+                    <a href="/">
+                        <div class="icon">
+                            <i class="ph ph-house"></i>
+                        </div>
+                        <div class="link_text">
+                            Home
+                        </div>
+                    </a>
+                    <a href="/profile">
+                        <div class="icon">
+                            <i class="ph ph-user"></i>
+                        </div>
+                        <div class="link_text">
+                            {{session.get('username') }}
+                        </div>
+                    </a>
+                    <a href="/logout">
+                        <div class="icon">
+                            <i class="ph ph-power"></i>
+                        </div>
+                        <div class="link_text">
+                            Logout
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="toggle_container">
+            <div class="toggle_button" onclick="document.getElementById('nav_bar').classList.toggle('close')">
+                <i class="ph ph-arrow-left"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="body_container">
 
         <div class="top_bar">
-            <div class="top_container">
-                <div class="left_icon"> <a href="/">🏠</a> </div>
-                <div class="text">
-                    <p>Note-ify</p>
-                </div>
+            <div class="left">
+                <div id="greeting">Good Morning</div>
+                <div class="name">{{ session.get('username') }}</div>
+            </div>
 
-                <div class="right_icons">
-                    <a href="/new" class="new">
-                        <div class="new-icon">+</div>
-                        <div class="new-text">New Note</div>
-                    </a>
-                    <a href="/profile">{{session.get('username') }}</a>
-                    <a href="/logout">Logout</a>
-                </div>
+            <div class="right">
+                <div id="date">13 Sept 2025</div>
+                <div id="time">09 : 00 AM</div>
             </div>
         </div>
 
-        <div class="filters">
-            <div class="filter">
-                <input type="checkbox" id="public" name="public" value="public">
-                <label for="public">Public</label>
+        <div class="all_notes_container">
+            <div class="top">
+                <h2>Your Notes</h2>
+                <div id="addNote">Add Note</div>
             </div>
-            <div class="filter">
-                <input type="checkbox" id="starred" name="starred"
-                    value="starred">
-                <label for="starred">Starred</label>
-            </div>
-        </div>
-
-        <div class="notes">
-
-            <ul>
+            <div class="notes">
                 {% for note in notes %}
-                    <a href="/{{ note[1] }}/{{ note[0] }}"
-                        class="note id_{{note[0]}} {{ 'starred-note' if note[6] else '' }} {{ 'public-note' if note[7] else '' }}">
-                        <div class="preview">
-                            <kbd>{{ note[5] }}</kbd>
-                            <div id="preview_{{ note[0] }}"
-                                data-content="{{ note[3] | e }}"></div>
+                <a href="/{{ note[1] }}/{{ note[0] }}"
+                    class="note id_{{note[0]}} {{ 'fav' if note[6] else '' }} {{ 'pub' if note[7] else '' }}">
+                    <div class="top">
+                        <h6 class="note_id">#{{ note[0] }}</h6>
+                        <h5 class="note_title">{{ note[2] }}</h5>
+                        <div class="note_buttons">
+                            <div class="icon favourite_btn {{ 'fav' if note[6] else '' }}" id="note_fav_{{ note[0] }}"
+                                note-id="{{ note[0] }}">
+                                <i class="ph ph-heart"></i>
+                            </div>
+                            <div class="icon public_btn {{ 'pub' if note[7] else '' }}" id="note_pub_{{ note[0] }}"
+                                note-id="{{ note[0] }}">
+                                <i class="ph ph-users"></i>
+                            </div>
                         </div>
-                        <div class="down">
-                            <h6>#{{ note[0] }}</h6>
-                            <h5>{{ note[2] }}</h5>
-                            <input note-id="{{ note[0] }}" name="fav_{{ note[0] }}"
-                                type="checkbox" class="star" {{ "checked" if note[6]
-                                }}>
-                            <input note-id="{{ note[0] }}" name="pub_{{ note[0] }}"
-                                type="checkbox" class="public" {{ "checked" if
-                                note[7] }}>
-                        </div>
-                    </a>
+                    </div>
+                    <div class="preview">
+                        <div id="preview_{{ note[0] }}" data-content="{{ note[3] | e }}"></div>
+                    </div>
+                </a>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
-
-        <!-- Alternative: Use marked.js for simpler markdown rendering -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/marked@5.1.1/marked.min.js"></script>
-
-        <script type="module">
-        // Fallback to using marked.js for markdown rendering (more reliable)
-        document.addEventListener('DOMContentLoaded', function () {
-            const previews = document.querySelectorAll('[id^="preview_"]');
-
-            previews.forEach(preview => {
-                const content = preview.dataset.content || '';
-
-                try {
-                    // Use marked.js to parse markdown
-                    const html = marked.parse(content);
-                    preview.innerHTML = `<div style="padding: 8px; font-size: 14px; line-height: 1.4;">${html}</div>`;
-                } catch (error) {
-                    console.error('Error parsing markdown:', error);
-                    // Ultimate fallback to plain text
-                    preview.innerHTML = `<div style="padding: 8px; font-size: 14px;">${content}</div>`;
-                }
-            });
-        });
+    </div>
 
 
-        // add the filters
-        const publicFilter = document.getElementById('public');
-        const starredFilter = document.getElementById('starred');
-
-        publicFilter.addEventListener('change', () => {
-            filterNotes();
-        });
-
-        starredFilter.addEventListener('change', () => {
-            filterNotes();
-        });
-
-        function filterNotes() {
-            const notes = document.querySelectorAll('.note');
-            notes.forEach(note => {
-                const isPublic = note.classList.contains('public-note');
-                const isStarred = note.classList.contains('starred-note');
-                // [ 0 - pub] [ 0 - fav]
-                // 
-                const shouldShow = (!publicFilter.checked || isPublic) && (!starredFilter.checked || isStarred);
-                note.style.display = shouldShow ? 'flex' : 'none';
-            });
-        }
-
-
-         // Handle star checkbox clicks (prevent navigation when clicking star)`
-         document.addEventListener('click', async function (e) {
-            if (e.target.classList.contains('star')) {
-                const noteId = e.target.name.replace('fav_', '');
-                const checked = e.target.checked;
-                const currentA = document.querySelector(`.id_${noteId}`);
-                e.preventDefault();
-                await fetch('/api/fav/' + noteId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "star": checked
-                    })
-                }).then(response => {
-                    if (response.ok) {
-                        response.json().then(data => {
-                            if (data.success) {
-                                e.target.checked = data.star;
-                                if (data.star) {
-                                    if (!currentA.classList.contains('starred-note')) {
-                                        currentA.classList.add('starred-note')
-                                    }
-                                } else {
-                                    if (currentA.classList.contains('starred-note')) {
-                                        currentA.classList.remove('starred-note')
-                                    }
-                                }
-                            }
-                        })
-                    } else {
-                        console.error('Error updating star status');
-                    }
-                }).catch(error => {
-                    console.error('Error updating star status:', error);
-                });
-
-            }
-        });
-        document.addEventListener('click',async function (e) {
-            if (e.target.classList.contains("public")){
-                const noteId = e.target.name.replace('pub_', '');
-                const checked = e.target.checked;
-                const currentA = document.querySelector(`.id_${noteId}`);
-                e.preventDefault();
-                await fetch('/api/pub/' + noteId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "public": checked
-                    })
-                }).then(response => {
-                    if (response.ok) {
-                        response.json().then(data => {
-                            if (data.success) {
-                                e.target.checked = data.public;
-                                if (data.success) {
-                               
-                                    if (!currentA.classList.contains('public-note')) {
-                                        currentA.classList.add('public-note')
-                                    }
-                                } else {
-                                    if (currentA.classList.contains('public-note')) {
-                                        currentA.classList.remove('public-note')
-                                        currentA.classList.remove('public-note')
-                                    }
-                                }
-                                }
-                        })
-                    } else {
-                        console.error('Error updating public status');
-                    }
-                }).catch(error => {
-                    console.error('Error updating public status:', error);
-                });
-            }
-            
-        })
-        
-    </script>
-    </body>
+    <!-- Alternative: Use marked.js for simpler markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.1/marked.min.js"></script>
+    <script type="module" src="{{ url_for('static', filename='notes.js') }}"></script>
+</body>
 
 </html>

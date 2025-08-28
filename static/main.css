@@ -1,8 +1,4 @@
-@font-face {
-    font-family: "Chillax";
-    src: url("/static/Chillax_Complete/Fonts/TTF/Chillax-Variable.ttf");;
-}
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
 :root {
     --yellow: #FFC857;
@@ -25,7 +21,7 @@ body {
     width: 100%;
     min-height: 100vh;
     flex-direction: column;
-    font-family: "Chillax", consolas;
+    font-family: "Nunito Sans", sans-serif;
     font-size: 20px;
     background: #ffffff;
     color: #2d2d2d;
